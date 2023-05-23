@@ -5,9 +5,11 @@ const Boss = () => {
     return (
         <div className='relative'>
            <img  src={img} alt="" />
-            <div className="box py-10 px-10 bg-white md:bottom-10 md:left-10 mr-10 bottom-0 left-0  absolute">
-                <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quidem incidunt quia labore cupiditate fugiat a, ratione odit necessitatibus minima voluptas dolorum voluptates fuga
+            <div className="box py-10 px-10 bg-white sm:md:bottom-[50%] left-[50%] translate-x-[-50%] translate-y-[50%]    absolute rounded-lg">
+
+                <h3 className='text-4xl text-black text-center'>Bistro Boss</h3>
+                <p className='text-black text-1xl text-center'>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, libero accusamus laborum deserunt ratione dolor officiis praesentium! 
                 </p>
             </div>
            
