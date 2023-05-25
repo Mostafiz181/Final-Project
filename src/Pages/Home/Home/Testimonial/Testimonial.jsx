@@ -36,7 +36,7 @@ const Testimonial = () => {
                   <Rating className="py-5"  style={{ maxWidth: 180 }} value={review.rating} readOnly />
                   <img src={img} alt="" />
 
-                  <p className="px-20 mt-3">{review.details}</p>
+                  <p className="px-20 mt-3 text-center">{review.details}</p>
                   <h2 className="text-4xl text-yellow-500 font-bold mt-2">
                     {review.name}
                   </h2>
