@@ -5,9 +5,10 @@ const Navbar = () => {
 
     const navInfo= <>
               <li>
-                <Link to='/'>Home</Link>
+                <Link className="uppercase" to='/'>Home</Link>
               </li>
-              <li><Link to='/menu'>Our Menu</Link></li>
+              <li><Link className="uppercase" to='/menu'>Our Menu</Link></li>
+              <li><Link className="uppercase" to='/order'>Order</Link></li>
     </>
   return (
     <div>
