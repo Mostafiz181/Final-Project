@@ -23,7 +23,7 @@ const Category = () => {
         slidesPerView={4}
         spaceBetween={30}
         autoplay={true}
-        centeredSlides={true}
+        centeredSlides={false}
         pagination={{
           clickable: true,
           
