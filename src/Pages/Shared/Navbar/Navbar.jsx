@@ -9,6 +9,7 @@ const Navbar = () => {
               </li>
               <li><Link className="uppercase" to='/menu'>Our Menu</Link></li>
               <li><Link className="uppercase" to='/order/salad'>Order</Link></li>
+              <li><Link className="uppercase" to='/login'>Login</Link></li>
     </>
   return (
     <div>
