@@ -49,10 +49,21 @@ const Login = () => {
     const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
       setDisabled(false);
-      alert("captcha matched");
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Captcha Matched',
+        showConfirmButton: false,
+        timer: 1500
+      })
     } else {
       setDisabled(true);
-      alert("captcha does not match");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Captcha does not match!',
+        
+      })
     }
   };
   return (

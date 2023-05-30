@@ -2,17 +2,20 @@ import React from "react";
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const {createUser}=useContext(AuthContext)
+  const {createUser,updateUserProfile}=useContext(AuthContext)
+  const navigate=useNavigate()
 
   const onSubmit = (data) => {
     console.log(data);
@@ -20,6 +23,22 @@ const SignUp = () => {
     .then(result=>{
       const loggedUser= result.user;
       console.log(loggedUser)
+      updateUserProfile(data.name,data.photo)
+      .then(()=>{
+        console.log("user update successful")
+        reset();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'User update successful',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        navigate('/');
+
+      })
+      .catch(error=>console.log(error))
+      
     })
   };
   return (
@@ -56,6 +75,20 @@ const SignUp = () => {
                 />
                 {errors.name && (
                   <span className="text-red-600">Name is required</span>
+                )}
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Photo URL</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Photo URL"
+                  {...register("photo Url", { required: true })}
+                  className="input input-bordered"
+                />
+                {errors.name && (
+                  <span className="text-red-600">Photo URL is required</span>
                 )}
               </div>
               <div className="form-control">
