@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { createContext } from 'react';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { app } from '../firebase/firebase.config';
+import axios from 'axios';
+
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
@@ -11,11 +13,18 @@ const AuthProvider = ({children}) => {
     const [user,setUser]= useState(null)
     const [loading,setLoading]=useState(true)
 
+    const googleProvider = new GoogleAuthProvider();
+
 
     const createUser = (email,password)=>{
         setLoading(true)
         return createUserWithEmailAndPassword(auth,email,password)
 
+    }
+
+    const googleSignIn=()=>{
+        setLoading (true)
+        return signInWithPopup(auth,googleProvider)
     }
 
 
@@ -35,22 +44,63 @@ const AuthProvider = ({children}) => {
           })
     }
 
-    useEffect(()=>{
-       const unsubscribe= onAuthStateChanged(auth,currentUser=>{
-            setUser(currentUser)
-            console.log(currentUser)
-           setLoading(false);
+    // useEffect(()=>{
+    //    const unsubscribe= onAuthStateChanged(auth,currentUser=>{
+    //         setUser(currentUser)
+    //         console.log(currentUser)
+    //         if(currentUser){
+    //             axios.post("http://localhost:5000/jwt",{email:currentUser.email})
+    //             .then(data=>{
+    //                 console.log(data.data.token)
+    //                 localStorage.setItem('access-token', data.data.token)
+    //                 setLoading(false);
+    //             })
+    //         }
+    //         else{
+    //             localStorage.removeItem('access-token')
+    //         }
+            
+          
+    //     });
+    //     return ()=>{
+    //         return unsubscribe
+    //     }
+    // },[])
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+       
+        //   console.log(currentUser);
+          if (currentUser) {
+            axios
+              .post("http://localhost:5000/jwt", { email: currentUser.email })
+              .then((response) => {
+                const token = response.data.token;
+                // console.log(token);
+                localStorage.setItem('access-token', token);
+                setLoading(false);
+                setUser(currentUser);
+              })
+              .catch((error) => {
+                console.error("Error fetching token:", error);
+              });
+          } else {
+            setLoading(false);
+            localStorage.removeItem('access-token');
+          }
         });
-        return ()=>{
-            return unsubscribe
-        }
-    },[])
+      
+        return unsubscribe; // Make sure to return the unsubscribe function from the effect
+      
+      }, []); // Empty dependency array to run the effect only once
+      
 
     const authInfo={
         user,
         loading,
         createUser,
         signIn,
+        googleSignIn,
         logOut,
         updateUserProfile
 
